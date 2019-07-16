@@ -5,13 +5,13 @@ ReplyTimeout = 25000;
 getID {
 
     out "*IDN?";
-    in "Cryo-con,Model %(\$1:MODEL_RD.VAL)/[^,]*/,%(\$1:SERIAL_RD.VAL)/[^,]*/,%(\$1:FIRMWARE_RD.VAL)s";
+    in "Cryo-con,Model %(\$1:MODEL_RD.VAL)/[^,]*/,%(\$1:SERIAL_RD.VAL)/[^,]*/,%(\$1:FVER_RD.VAL)s";
 }
 
 getCHxTEM {
     out "INP \$2:TEMP?";
     in "%f";
-    @mismatch { in "%(\$1:CH\$2MESSAGE_RD.VAL)/[-.clip]*/"; }
+    @mismatch { in "%(\$1:CH\$2MESSAGE_RD.VAL)/[-.clip]*/"; }   
 }
 
 getCHxSEN {
@@ -36,7 +36,7 @@ getCHxLO {
 }
 
 getCHxUNITS {
-    out "INP \$1:UNITS?";
+    out "INP \$2:UNITS?";
     in "%(\$1:CH\$2T_RD.EGU)s";
 }
 

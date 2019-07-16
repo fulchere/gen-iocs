@@ -19,8 +19,8 @@ dbLoadRecords("../../db/cryocon.db","P={{ name_sensor }}")
 
 
 ## Load the rest of the record instances
-{%- for i in range(dct.__len__()//2) %}
-dbLoadRecords("${TOP}/db/fths.db", "SRC={{ dct[i] }},SRC2={{ dct[i+1] }},P={{ name_sensor }}")
+{%- for i in range((dct.__len__()//2)) %}
+dbLoadRecords("${TOP}/db/fths.db", "SRC={{ dct[2*i] }},SRC2={{ dct[(2*i)+1] }},P={{ name_sensor }}")
 {%- endfor %}
 
 
