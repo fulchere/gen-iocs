@@ -5,6 +5,7 @@
 < envPaths
 
 epicsEnvSet("LOCATION", "Rack Group {{ name_sensor }}")
+epicsEnvSet("STREAM_PROTOCOL_PATH", "$(TOP)")
 
 ## Register all support components
 dbLoadDatabase("${TOP}/dbd/fths.dbd",0,0)

@@ -59,10 +59,6 @@ template = env.get_template('template.st.cmd')
 env_two = Environment(loader=FileSystemLoader('./'))
 template_two = env_two.get_template('template.Makefile')
 
-# Create test.proto
-env_four = Environment(loader=FileSystemLoader('./'))
-template_four = env_four.get_template('template.test.proto')
-
 txt_file_pth = 'folder_names'    
 with open(txt_file_pth, 'wb') as txtfile:
 
@@ -88,14 +84,6 @@ with open(txt_file_pth, 'wb') as txtfile:
             os.makedirs(target_pth)
         with open(target, 'wb') as f:
             f.write(template_two.render(iocdata))
-
-        # Create test.proto
-        target = '../iocBoot/%s/test.proto' % iocname
-        target_pth = target[:-11]
-        if not os.path.exists(target_pth):
-            os.makedirs(target_pth)
-        with open(target, 'wb') as f:
-            f.write(template_four.render(iocdata))
 
         print '%s Done' % iocname
 
