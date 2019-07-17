@@ -4,7 +4,7 @@ from collections import OrderedDict
 from jinja2 import Environment, FileSystemLoader
 from itertools import izip
 
-source = 'FTS Tracker.xlsx'
+source = '../docs/FTS Tracker.xlsx'
 
 wb = xlrd.open_workbook(source, on_demand=True)
 ws = wb.sheet_by_name('.db Parsing')
@@ -20,16 +20,17 @@ iocs = OrderedDict()
 data = []
 odd = ["A","C","E","G"]
 even = ["B","D","F","H"]
+Jenkinsfile_names = {'the_names' : []}
 for name, channel, sensor in items:
     if name == "":
         continue
 
     # Convert LS1_CA01:FTHS_N0002 to ls1-ca01-fths-n0002
+    name = name.strip()
     name_sensor = name
     name_l = list(name)
     name_l[3],name_l[8],name_l[13] = "-","-","-"
     name = "".join(name_l).lower()
-    name = name[:-1]
 
     if sensor != "" and sensor != 0.0:
         # Convert LS1:CA01:FTS:TX481A to LS1_CA01:FTHS_TX481A
@@ -50,6 +51,8 @@ for name, channel, sensor in items:
             }
     specific_ioc = iocs[name]
     specific_ioc['dct'].append(sensor)
+    if name not in Jenkinsfile_names['the_names']:
+        Jenkinsfile_names['the_names'].append(name)
 
 # Create st.cmd file
 env = Environment(loader=FileSystemLoader('./'))
@@ -58,6 +61,10 @@ template = env.get_template('template.st.cmd')
 # Create Makefile
 env_two = Environment(loader=FileSystemLoader('./'))
 template_two = env_two.get_template('template.Makefile')
+
+# Create Jenkinsfile
+env_three = Environment(loader=FileSystemLoader('./'))
+template_three = env_three.get_template('template.Jenkinsfile')
 
 txt_file_pth = 'folder_names'    
 with open(txt_file_pth, 'wb') as txtfile:
@@ -84,7 +91,14 @@ with open(txt_file_pth, 'wb') as txtfile:
             os.makedirs(target_pth)
         with open(target, 'wb') as f:
             f.write(template_two.render(iocdata))
-
+        
+        # Printed after every folder created
         print '%s Done' % iocname
 
+    # Create Jenkinsfile
+    target = '../Jenkinsfile'
+    with open(target, 'wb') as f:
+        f.write(template_three.render(Jenkinsfile_names))
+
 txtfile.close()
+

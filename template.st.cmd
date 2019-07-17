@@ -12,7 +12,7 @@ dbLoadDatabase("${TOP}/dbd/fths.dbd",0,0)
 fths_registerRecordDeviceDriver(pdbbase)
 
 
-drvAsynIPPortConfigure("dev1","192.168.1.4:5000", 0, 0, 0)
+drvAsynIPPortConfigure("dev1","{{ name }}:5000", 0, 0, 0)
 
 
 ## Load first record instance
@@ -26,7 +26,7 @@ dbLoadRecords("${TOP}/db/fths.db", "SRC={{ dct[2*i] }},SRC2={{ dct[(2*i)+1] }},P
 
 
 ## load Asyn
-dbLoadRecords("$(EPICS_BASE)/db/asynRecord.db","P=,R=asyn,PORT=dev1,ADDR=0,OMAX=40,IMAX=40")
+dbLoadRecords("$(EPICS_BASE)/db/asynRecord.db","P={{ name_sensor }}:,R=asyn,PORT=dev1,ADDR=0,OMAX=40,IMAX=40")
 
 
 ## Last line
